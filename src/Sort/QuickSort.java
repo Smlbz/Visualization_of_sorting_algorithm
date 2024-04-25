@@ -132,7 +132,6 @@ class QuickSortingPanel extends JPanel implements Runnable {
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
         }
     }
-
     // 快速排序的辅助函数，用于进行分区操作
     private int partition(int[] numbers, int low, int high) throws InterruptedException {
         int pivot = numbers[high];
@@ -148,7 +147,6 @@ class QuickSortingPanel extends JPanel implements Runnable {
                 int temp = numbers[i];
                 numbers[i] = numbers[j];
                 numbers[j] = temp;
-
                 // 高亮正在交换的元素
                 currentBar = i;
                 swapBar = j;
@@ -163,15 +161,12 @@ class QuickSortingPanel extends JPanel implements Runnable {
                 Thread.sleep(200);
             }
         }
-
         // 交换 numbers[i+1] 和 numbers[high]（或 pivot）
         int temp = numbers[i + 1];
         numbers[i + 1] = numbers[high];
         numbers[high] = temp;
-
         return i + 1;
     }
-
     // 主快速排序函数
     private void quickSort(int[] numbers, int low, int high) throws InterruptedException {
         highlightCodeLine(0); // 高亮quickSort
@@ -205,7 +200,9 @@ class QuickSortingPanel extends JPanel implements Runnable {
             swapBar = -1;
             currentBar = -1;
             highlightCodeLine(-1);
-            repaint();
+            while(true) {
+            	repaint();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

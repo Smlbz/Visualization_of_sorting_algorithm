@@ -152,7 +152,9 @@ class BubbleSortingPanel extends JPanel implements Runnable {
             }
             currentBar=-1;
             highlightCodeLine(-1);
-            repaint();
+            while(true) {
+            	repaint();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

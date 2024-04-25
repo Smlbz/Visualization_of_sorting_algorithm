@@ -35,7 +35,8 @@ public class Main {
         KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
         String actionKey = "onBackspacePressed"; 
         Action action = new AbstractAction() {
-            @Override
+			private static final long serialVersionUID = 5135235467165795357L;
+			@Override
             public void actionPerformed(ActionEvent e) {
             	frame.getContentPane().removeAll();
                 frame.getContentPane().revalidate();
