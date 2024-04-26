@@ -3,17 +3,18 @@ package Sort;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class QuickSort {
-    public QuickSort(JFrame frame) {
+    public QuickSort(JFrame frame,ArrayList<Integer>number) {
         SwingUtilities.invokeLater(() -> {
             frame.setTitle("快速排序可视化");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(new BorderLayout());
             frame.setSize(1600, 800);
 
-            QuickSortingPanel panel = new QuickSortingPanel();
+            QuickSortingPanel panel = new QuickSortingPanel(number);
             frame.add(panel, BorderLayout.CENTER);
 
             JTextPane codePane = new JTextPane();
@@ -80,12 +81,17 @@ class QuickSortingPanel extends JPanel implements Runnable {
     private SimpleAttributeSet defaultAttr;
     private SimpleAttributeSet highlightAttr;
 
-    public QuickSortingPanel() {
-        numbers = new int[20];
-        Random rand = new Random();
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = rand.nextInt(100) + 1;
-        }
+    public QuickSortingPanel(ArrayList<Integer>number) {
+    	if(number.size()==0) {
+            numbers = new int[20];
+            Random rand = new Random();
+            for (int i = 0; i < 20; i++) {
+                numbers[i] = rand.nextInt(100) + 1;
+            }
+    	}
+    	else {
+    		numbers = number.stream().mapToInt(Integer::intValue).toArray();
+    	}
         initStyles();
     }
 
@@ -129,6 +135,8 @@ class QuickSortingPanel extends JPanel implements Runnable {
                 g.setColor(new Color(0xFF8C00)); // 其他条形图设置颜色
             }
             g.fillRect(x, getHeight() - height, width - 2, height); // 绘制条形图
+            Font font = new Font("Century Gothic", Font.PLAIN, 22);//设置字体大小
+            g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
         }
     }
