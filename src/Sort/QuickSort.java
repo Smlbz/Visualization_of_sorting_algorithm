@@ -135,7 +135,7 @@ class QuickSortingPanel extends JPanel implements Runnable {
                 g.setColor(new Color(0xFF8C00)); // 其他条形图设置颜色
             }
             g.fillRect(x, getHeight() - height, width - 2, height); // 绘制条形图
-            Font font = new Font("Century Gothic", Font.PLAIN, 22);//设置字体大小
+            Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
         }
