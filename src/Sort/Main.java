@@ -107,15 +107,12 @@ public class Main {
                 frame.getContentPane().revalidate();
                 frame.getContentPane().repaint();
                 new Main(frame);
-                frame.requestFocusInWindow();
             }
         };
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = frame.getRootPane().getActionMap();
         inputMap.put(keyStroke, actionKey);
         actionMap.put(actionKey, action);
-        frame.setVisible(true);
-        frame.requestFocusInWindow();
         
         BubbleButton.addActionListener(new ActionListener() {
         	@Override
