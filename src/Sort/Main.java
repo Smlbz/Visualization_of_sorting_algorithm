@@ -107,12 +107,15 @@ public class Main {
                 frame.getContentPane().revalidate();
                 frame.getContentPane().repaint();
                 new Main(frame);
+                frame.requestFocusInWindow();
             }
         };
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = frame.getRootPane().getActionMap();
         inputMap.put(keyStroke, actionKey);
         actionMap.put(actionKey, action);
+        frame.setVisible(true);
+        frame.requestFocusInWindow();
         
         BubbleButton.addActionListener(new ActionListener() {
         	@Override
@@ -138,6 +141,7 @@ public class Main {
     public static boolean isValid(String input) {
     	//正则表达式,支持逗号(,)和空格( )作为分割符,
     	//不支持中文逗号和空格,不支持非十进制数,不支持含有前导零的数和负数
+    	//不建议输入数量超过60,不建议输入数字大于140
         String pattern = "^\\s*(0|([1-9]\\d*))(?:\\s*,\\s*(0|([1-9]\\d*)))*\\s*$";
         return Pattern.matches(pattern, input);
     }
