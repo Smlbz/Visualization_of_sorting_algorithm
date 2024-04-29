@@ -155,49 +155,109 @@ class MergeSortingPanel extends JPanel implements Runnable {
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
         }
     }
-    private void merge(int arr[], int left, int middle, int right) {
+    private void merge(int arr[], int left, int middle, int right) throws InterruptedException {
         int n1 = middle - left + 1;
         int n2 = right - middle;
         int leftArr[] = new int[n1];
         int rightArr[] = new int[n2];
-        for (int i = 0; i < n1; ++i)
+        highlightCodeLine(5);
+        repaint();
+        Thread.sleep(200); 
+        for (int i = 0; i < n1; ++i) {
+        	currentBar=left+i;
+            highlightCodeLine(6);
+            repaint();
+            Thread.sleep(200); 
             leftArr[i] = arr[left + i];
-        for (int j = 0; j < n2; ++j)
+        }
+        highlightCodeLine(8);
+        repaint();
+        Thread.sleep(200); 
+        for (int j = 0; j < n2; ++j) {
+        	currentBar=middle+1+j;
+            highlightCodeLine(9);
+            repaint();
+            Thread.sleep(200); 
             rightArr[j] = arr[middle + 1 + j]; 
+        }
         int i = 0, j = 0;
         int k = left;
+        highlightCodeLine(13);
+        repaint();
+        Thread.sleep(200); 
         while (i < n1 && j < n2) {
+            highlightCodeLine(14);
+            repaint();
+            Thread.sleep(200); 
             if (leftArr[i] <= rightArr[j]) {
+                currentBar=k;
+                highlightCodeLine(15);
+                repaint();
+                Thread.sleep(200); 
                 arr[k] = leftArr[i];
                 i++;
-            } else {
+            }
+            else {
+                currentBar=k;
+                highlightCodeLine(19);
+                repaint();
+                Thread.sleep(200); 
                 arr[k] = rightArr[j];
                 j++;
             }
             k++;
         }
+        highlightCodeLine(24);
+        repaint();
+        Thread.sleep(200); 
         while (i < n1) {
+            currentBar=k;
+            highlightCodeLine(25);
+            repaint();
+            Thread.sleep(200); 
             arr[k] = leftArr[i];
             i++;
             k++;
         }
+        highlightCodeLine(29);
+        repaint();
+        Thread.sleep(200); 
         while (j < n2) {
+            currentBar=k;
+            highlightCodeLine(30);
+            repaint();
+            Thread.sleep(200); 
             arr[k] = rightArr[j];
             j++;
             k++;
         }
     }
-    private void mergesort(int arr[], int left, int right) {
+    private void mergesort(int arr[], int left, int right) throws InterruptedException {
         if (left < right) {
             int middle = (left + right) / 2;
+            highlightCodeLine(35);
+            repaint();
+            Thread.sleep(200); 
             mergesort(arr, left, middle);
+            highlightCodeLine(36);
+            repaint();
+            Thread.sleep(200); 
             mergesort(arr, middle + 1, right);
+            highlightCodeLine(37);
+            repaint();
+            Thread.sleep(200); 
+            highlightCodeLine(0);
+            repaint();
+            Thread.sleep(200); 
             merge(arr, left, middle, right);
         }
     }
     public void sort() {
         try {
             int n = numbers.length;
+            highlightCodeLine(32);
+            repaint();
+            Thread.sleep(200); 
             mergesort(numbers,0,n-1);
         	swapBar = -1;
             currentBar=-1;
