@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -29,6 +30,14 @@ public class Main {
         QuickButton.setBounds(230,650,200,100);
         QuickButton.setFont(new Font("Ó×Ô²",Font.PLAIN,24));
         QuickButton.setVisible(true);
+        JButton HeapButton=new JButton("¶ÑÅÅÐò");
+        HeapButton.setBounds(460,650,200,100);
+        HeapButton.setFont(new Font("Ó×Ô²",Font.PLAIN,24));
+        HeapButton.setVisible(true);
+        JButton MergeButton=new JButton("¹é²¢ÅÅÐò");
+        MergeButton.setBounds(690,650,200,100);
+        MergeButton.setFont(new Font("Ó×Ô²",Font.PLAIN,24));
+        MergeButton.setVisible(true);
         
         JPanel panel = new JPanel(new GridBagLayout());
         Font panelFont = new Font("Ó×Ô²",Font.PLAIN,16);
@@ -83,6 +92,8 @@ public class Main {
         
         frame.add(BubbleButton);
         frame.add(QuickButton);
+        frame.add(HeapButton);
+        frame.add(MergeButton);
         frame.getContentPane().add(panel);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -92,33 +103,35 @@ public class Main {
                 double ratioHeight=frame.getHeight()*1.0/800;
                 BubbleButton.setBounds((int) (10*ratioWidth), (int)(650*ratioHeight),(int)(200*ratioWidth),(int)(100*ratioHeight));
                 QuickButton.setBounds((int) (230*ratioWidth), (int)(650*ratioHeight),(int)(200*ratioWidth),(int)(100*ratioHeight));
+                HeapButton.setBounds((int) (460*ratioWidth), (int)(650*ratioHeight),(int)(200*ratioWidth),(int)(100*ratioHeight));
+                MergeButton.setBounds((int) (690*ratioWidth), (int)(650*ratioHeight),(int)(200*ratioWidth),(int)(100*ratioHeight));
                 panel.setBounds((int) (100*ratioWidth), (int)(100*ratioHeight),(int)(1400*ratioWidth),(int)(500*ratioHeight));
                 scrollPane.setBounds((int) (530*ratioWidth), (int)(100*ratioHeight),(int)(400*ratioWidth),(int)(200*ratioHeight));
             }
         });
         //·µ»Ø
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
-        String actionKey = "onBackspacePressed"; 
-        Action action = new AbstractAction() {
-			private static final long serialVersionUID = 5135235467165795357L;
-			@Override
-            public void actionPerformed(ActionEvent e) {
-            	frame.getContentPane().removeAll();
-                frame.getContentPane().revalidate();
-                frame.getContentPane().repaint();
-                new Main(frame);
+        frame.setFocusable(true);
+        frame.requestFocusInWindow();
+        // Ìí¼Ó¼üÅÌ¼àÌýÆ÷¼ì²â Backspace ¼ü,°´ÏÂ¼´·µ»ØÅÅÐòËã·¨Ñ¡Ôñ
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().revalidate();
+                    frame.getContentPane().repaint();
+                    new Main(frame);
+                }
             }
-        };
-        InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = frame.getRootPane().getActionMap();
-        inputMap.put(keyStroke, actionKey);
-        actionMap.put(actionKey, action);
+        });
         
         BubbleButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		BubbleButton.setVisible(false);
         		QuickButton.setVisible(false);
+        		HeapButton.setVisible(false);
+        		MergeButton.setVisible(false);
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new BubbleSort(frame,number);
@@ -129,9 +142,35 @@ public class Main {
         	public void actionPerformed(ActionEvent e) {
         		QuickButton.setVisible(false);
         		BubbleButton.setVisible(false);
+        		HeapButton.setVisible(false);
+        		MergeButton.setVisible(false);
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new QuickSort(frame,number);
+        	}
+        });
+        HeapButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		QuickButton.setVisible(false);
+        		BubbleButton.setVisible(false);
+        		HeapButton.setVisible(false);
+        		MergeButton.setVisible(false);
+        		panel.setVisible(false);
+        		scrollPane.setVisible(false);
+        		new HeapSort(frame,number);
+        	}
+        });
+        MergeButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		QuickButton.setVisible(false);
+        		BubbleButton.setVisible(false);
+        		HeapButton.setVisible(false);
+        		MergeButton.setVisible(false);
+        		panel.setVisible(false);
+        		scrollPane.setVisible(false);
+        		new MergeSort(frame,number);
         	}
         });
 	}
