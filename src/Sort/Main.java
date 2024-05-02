@@ -16,6 +16,7 @@ import javax.swing.*;
 public class Main {
 	private ArrayList<Integer> number = new ArrayList<Integer>();
 	public Main(JFrame frame) {
+		frame.setTitle("排序可视化");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(1600, 800);
@@ -174,7 +175,7 @@ public class Main {
         	}
         });
 	}
-    public static boolean isValid(String input) {
+	public static boolean isValid(String input) {
     	//正则表达式,支持逗号(,)和空格( )作为分割符,
     	//不支持中文逗号和空格,不支持非十进制数,不支持含有前导零的数和负数
     	//不建议输入数量超过60,不建议输入数字大于140
