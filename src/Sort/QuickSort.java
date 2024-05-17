@@ -152,15 +152,15 @@ class QuickSortingPanel extends JPanel implements Runnable {
             if (numbers[j] <= pivot) {
                 i++;
                 // 交换 numbers[i] 和 numbers[j]
-                int temp = numbers[i];
-                numbers[i] = numbers[j];
-                numbers[j] = temp;
-                // 高亮正在交换的元素
                 currentBar = i;
                 swapBar = j;
                 highlightCodeLine(13); 
                 repaint();
                 Thread.sleep(200);
+                int temp = numbers[i];
+                numbers[i] = numbers[j];
+                numbers[j] = temp;
+                // 高亮正在交换的元素
                 highlightCodeLine(14);
                 repaint();
                 Thread.sleep(200);
@@ -170,9 +170,20 @@ class QuickSortingPanel extends JPanel implements Runnable {
             }
         }
         // 交换 numbers[i+1] 和 numbers[high]（或 pivot）
+        currentBar = i+1;
+        swapBar = high;
+        highlightCodeLine(19); 
+        repaint();
+        Thread.sleep(200);
         int temp = numbers[i + 1];
         numbers[i + 1] = numbers[high];
         numbers[high] = temp;
+        highlightCodeLine(20);
+        repaint();
+        Thread.sleep(200);
+        highlightCodeLine(21); 
+        repaint();
+        Thread.sleep(200);
         return i + 1;
     }
     // 主快速排序函数

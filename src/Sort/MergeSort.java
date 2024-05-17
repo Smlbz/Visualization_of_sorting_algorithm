@@ -8,7 +8,7 @@ import java.util.Random;
 public class MergeSort {
     public MergeSort(JFrame frame,ArrayList<Integer> number) {
         SwingUtilities.invokeLater(() -> {
-        	frame.setTitle("冒泡排序可视化");
+        	frame.setTitle("归并排序可视化");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(new BorderLayout());
             frame.setSize(1600, 800);
