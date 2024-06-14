@@ -75,6 +75,7 @@ public class QuickSort {
 class QuickSortingPanel extends JPanel implements Runnable {
     private static final long serialVersionUID = 1L;
     private final int[] numbers;
+    private final int[] pos;
     private int currentBar = -1;
     private int swapBar = -1;
     private JTextPane codePane;
@@ -84,13 +85,20 @@ class QuickSortingPanel extends JPanel implements Runnable {
     public QuickSortingPanel(ArrayList<Integer>number) {
     	if(number.size()==0) {
             numbers = new int[20];
+            pos = new int[20];
             Random rand = new Random();
             for (int i = 0; i < 20; i++) {
                 numbers[i] = rand.nextInt(100) + 1;
+                pos[i] = i;
             }
     	}
     	else {
     		numbers = number.stream().mapToInt(Integer::intValue).toArray();
+    		int l = numbers.length;
+    		pos = new int[l];
+    		for(int i=0; i < l ; i++) {
+    			pos[i] = i;
+    		}
     	}
         initStyles();
     }
@@ -138,11 +146,15 @@ class QuickSortingPanel extends JPanel implements Runnable {
             Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
+            font = new Font("Century Gothic", Font.BOLD, 28);
+            g.setFont(font);
+            g.drawString(Integer.toString(pos[i]), x, getHeight() - height - 25);
         }
     }
     // 快速排序的辅助函数，用于进行分区操作
-    private int partition(int[] numbers, int low, int high) throws InterruptedException {
+    private int partition(int[] numbers, int[]pos,int low, int high) throws InterruptedException {
         int pivot = numbers[high];
+        int pospivot = pos[high];
         int i = (low - 1); // 较小元素的索引
         for (int j = low; j < high; j++) {
             // 如果当前元素小于或等于 pivot
@@ -158,6 +170,9 @@ class QuickSortingPanel extends JPanel implements Runnable {
                 repaint();
                 Thread.sleep(200);
                 int temp = numbers[i];
+                int poswap = pos[i];
+                pos[i] = pos[j];
+                pos[j] = poswap;
                 numbers[i] = numbers[j];
                 numbers[j] = temp;
                 // 高亮正在交换的元素
@@ -176,6 +191,9 @@ class QuickSortingPanel extends JPanel implements Runnable {
         repaint();
         Thread.sleep(200);
         int temp = numbers[i + 1];
+        int poswap = pos[i + 1];
+        pos[i + 1] = pos[high];
+        pos[high] = poswap;
         numbers[i + 1] = numbers[high];
         numbers[high] = temp;
         highlightCodeLine(20);
@@ -187,7 +205,7 @@ class QuickSortingPanel extends JPanel implements Runnable {
         return i + 1;
     }
     // 主快速排序函数
-    private void quickSort(int[] numbers, int low, int high) throws InterruptedException {
+    private void quickSort(int[] numbers, int[]pos,int low, int high) throws InterruptedException {
         highlightCodeLine(0); // 高亮quickSort
         repaint();
         Thread.sleep(200);
@@ -195,16 +213,16 @@ class QuickSortingPanel extends JPanel implements Runnable {
         repaint();
         Thread.sleep(200);
     	if (low < high) {
-            int pi = partition(numbers, low, high);
+            int pi = partition(numbers, pos,low, high);
             highlightCodeLine(2); // 高亮partition
             repaint();
             Thread.sleep(200);
             // 递归排序 pivot 两侧的元素
-            quickSort(numbers, low, pi - 1);
+            quickSort(numbers, pos,low, pi - 1);
             highlightCodeLine(3); // 高亮递归
             repaint();
             Thread.sleep(200);
-            quickSort(numbers, pi + 1, high);
+            quickSort(numbers,pos,pi + 1, high);
             highlightCodeLine(4); // 高亮递归
             repaint();
             Thread.sleep(200);
@@ -214,7 +232,7 @@ class QuickSortingPanel extends JPanel implements Runnable {
     public void sort() {
         try {
             int high = numbers.length - 1;
-            quickSort(numbers, 0, high);
+            quickSort(numbers,pos,0, high);
             // 清除高亮显示
             swapBar = -1;
             currentBar = -1;

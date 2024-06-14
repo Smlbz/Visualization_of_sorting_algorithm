@@ -62,6 +62,7 @@ public class BubbleSort {
 class BubbleSortingPanel extends JPanel implements Runnable {
     private static final long serialVersionUID = 1L;
     private final int[] numbers;
+    private final int[] pos;
     private int currentBar = -1;
     private int swapBar = -1;
     private JTextPane codePane;
@@ -71,13 +72,20 @@ class BubbleSortingPanel extends JPanel implements Runnable {
     public BubbleSortingPanel(ArrayList<Integer>number) {
     	if(number.size()==0) {
             numbers = new int[20];
+            pos = new int[20];
             Random rand = new Random();
             for (int i = 0; i < 20; i++) {
                 numbers[i] = rand.nextInt(100) + 1;
+                pos[i] = i;
             }
     	}
     	else {
     		numbers = number.stream().mapToInt(Integer::intValue).toArray();
+    		int l = numbers.length;
+    		pos = new int[l];
+    		for(int i=0; i < l ; i++) {
+    			pos[i] = i;
+    		}
     	}
         initStyles();
     }
@@ -125,6 +133,9 @@ class BubbleSortingPanel extends JPanel implements Runnable {
             Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
+            font = new Font("Century Gothic", Font.BOLD, 28);
+            g.setFont(font);
+            g.drawString(Integer.toString(pos[i]), x, getHeight() - height - 25);
         }
     }
 
@@ -150,6 +161,9 @@ class BubbleSortingPanel extends JPanel implements Runnable {
                         Thread.sleep(200);
                         //交换操作
                         int temp = numbers[j];
+                        int poswap = pos[j];
+                        pos[j] = pos[j + 1];
+                        pos[j + 1] = poswap;
                         numbers[j] = numbers[j + 1];
                         numbers[j + 1] = temp;
                     }

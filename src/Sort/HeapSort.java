@@ -76,6 +76,7 @@ public class HeapSort {
 class HeapSortingPanel extends JPanel implements Runnable {
     private static final long serialVersionUID = 1L;
     private final int[] numbers;
+    private final int[] pos;
     private int currentBar = -1;
     private int swapBar = -1;
     private JTextPane codePane;
@@ -85,13 +86,20 @@ class HeapSortingPanel extends JPanel implements Runnable {
     public HeapSortingPanel(ArrayList<Integer>number) {
     	if(number.size()==0) {
             numbers = new int[20];
+            pos = new int[20];
             Random rand = new Random();
             for (int i = 0; i < 20; i++) {
                 numbers[i] = rand.nextInt(100) + 1;
+                pos[i] = i;
             }
     	}
     	else {
     		numbers = number.stream().mapToInt(Integer::intValue).toArray();
+    		int l = numbers.length;
+    		pos = new int[l];
+    		for(int i=0; i < l ; i++) {
+    			pos[i] = i;
+    		}
     	}
         initStyles();
     }
@@ -139,10 +147,13 @@ class HeapSortingPanel extends JPanel implements Runnable {
             Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
+            font = new Font("Century Gothic", Font.BOLD, 28);
+            g.setFont(font);
+            g.drawString(Integer.toString(pos[i]), x, getHeight() - height - 25);
         }
     }
     //堆操作
-    private void heapify(int arr[], int n, int i) throws InterruptedException {
+    private void heapify(int arr[], int pos[],int n, int i) throws InterruptedException {
         int largest = i;
         int l = 2 * i + 1;
         int r = 2 * i + 2;
@@ -174,18 +185,21 @@ class HeapSortingPanel extends JPanel implements Runnable {
             currentBar = i;
             swapBar = largest;
             int swap = arr[i];
+            int pswap = pos[i];
             highlightCodeLine(21);
             repaint();
             Thread.sleep(200);
             arr[i] = arr[largest];
+            pos[i] = pos[largest];
             highlightCodeLine(22);
             repaint();
             Thread.sleep(200);
             arr[largest] = swap;
+            pos[largest] = pswap;
             highlightCodeLine(23);
             repaint();
             Thread.sleep(200);
-            heapify(arr, n, largest);
+            heapify(arr,pos,n, largest);
         }
     }
     public void sort() {
@@ -197,7 +211,7 @@ class HeapSortingPanel extends JPanel implements Runnable {
                 highlightCodeLine(3); 
                 repaint();
                 Thread.sleep(200);
-                heapify(numbers, n, i);
+                heapify(numbers,pos,n, i);
             }
             for (int i = n - 1; i >= 0; i--) {
                 highlightCodeLine(5);
@@ -206,18 +220,21 @@ class HeapSortingPanel extends JPanel implements Runnable {
                 currentBar = i;
                 swapBar = 0;
                 int temp = numbers[0];
+                int pswap = pos[0];
                 highlightCodeLine(6);
                 repaint();
                 Thread.sleep(200); 
                 numbers[0] = numbers[i];
+                pos[0] = pos[i];
                 highlightCodeLine(7);
                 repaint();
                 Thread.sleep(200);
                 numbers[i] = temp;
+                pos[i] = pswap;
                 highlightCodeLine(8);
                 repaint();
                 Thread.sleep(200);
-                heapify(numbers, i, 0);
+                heapify(numbers,pos,i, 0);
             }
             currentBar=-1;
             swapBar=-1;

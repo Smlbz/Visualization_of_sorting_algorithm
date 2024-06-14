@@ -39,6 +39,10 @@ public class Main {
         MergeButton.setBounds(690,650,200,100);
         MergeButton.setFont(new Font("Ó×Ô²",Font.PLAIN,24));
         MergeButton.setVisible(true);
+        JButton BackButton=new JButton("·µ»Ø");
+        BackButton.setBounds(0, 0, 150, 75);
+        BackButton.setFont(new Font("Ó×Ô²",Font.PLAIN,24));
+        BackButton.setVisible(false);
         
         JPanel panel = new JPanel(new GridBagLayout());
         Font panelFont = new Font("Ó×Ô²",Font.PLAIN,16);
@@ -95,6 +99,7 @@ public class Main {
         frame.add(QuickButton);
         frame.add(HeapButton);
         frame.add(MergeButton);
+        frame.add(BackButton);
         frame.getContentPane().add(panel);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -126,6 +131,17 @@ public class Main {
             }
         });
         
+        BackButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().revalidate();
+                frame.getContentPane().repaint();
+                new Main(frame);
+                BackButton.setVisible(false);
+        	}
+        });
+        
         BubbleButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -136,6 +152,9 @@ public class Main {
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new BubbleSort(frame,number);
+        		frame.repaint();
+        		BackButton.setVisible(true);
+        		frame.repaint();
         	}
         });
         QuickButton.addActionListener(new ActionListener() {
@@ -148,6 +167,9 @@ public class Main {
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new QuickSort(frame,number);
+        		frame.repaint();
+        		BackButton.setVisible(true);
+        		frame.repaint();
         	}
         });
         HeapButton.addActionListener(new ActionListener() {
@@ -160,6 +182,9 @@ public class Main {
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new HeapSort(frame,number);
+        		frame.repaint();
+        		BackButton.setVisible(true);
+        		frame.repaint();
         	}
         });
         MergeButton.addActionListener(new ActionListener() {
@@ -172,6 +197,9 @@ public class Main {
         		panel.setVisible(false);
         		scrollPane.setVisible(false);
         		new MergeSort(frame,number);
+        		frame.repaint();
+        		BackButton.setVisible(true);
+        		frame.repaint();
         	}
         });
 	}

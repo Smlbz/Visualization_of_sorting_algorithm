@@ -90,6 +90,7 @@ public class MergeSort {
 class MergeSortingPanel extends JPanel implements Runnable {
     private static final long serialVersionUID = 1L;
     private final int[] numbers;
+    private final int[] pos;
     private int currentBar = -1;
     private int swapBar = -1;
     private JTextPane codePane;
@@ -99,13 +100,20 @@ class MergeSortingPanel extends JPanel implements Runnable {
     public MergeSortingPanel(ArrayList<Integer>number) {
     	if(number.size()==0) {
             numbers = new int[20];
+            pos = new int[20];
             Random rand = new Random();
             for (int i = 0; i < 20; i++) {
                 numbers[i] = rand.nextInt(100) + 1;
+                pos[i] = i;
             }
     	}
     	else {
     		numbers = number.stream().mapToInt(Integer::intValue).toArray();
+    		int l = numbers.length;
+    		pos = new int[l];
+    		for(int i=0; i < l ; i++) {
+    			pos[i] = i;
+    		}
     	}
         initStyles();
     }
@@ -153,13 +161,18 @@ class MergeSortingPanel extends JPanel implements Runnable {
             Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字
+            font = new Font("Century Gothic", Font.BOLD, 28);
+            g.setFont(font);
+            g.drawString(Integer.toString(pos[i]), x, getHeight() - height - 25);
         }
     }
-    private void merge(int arr[], int left, int middle, int right) throws InterruptedException {
+    private void merge(int arr[], int pos[],int left, int middle, int right) throws InterruptedException {
         int n1 = middle - left + 1;
         int n2 = right - middle;
         int leftArr[] = new int[n1];
         int rightArr[] = new int[n2];
+        int leftPos[] = new int[n1];
+        int rightPos[] = new int[n2];
         highlightCodeLine(5);
         repaint();
         Thread.sleep(200); 
@@ -169,6 +182,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
             repaint();
             Thread.sleep(200); 
             leftArr[i] = arr[left + i];
+            leftPos[i] = pos[left + i];
         }
         highlightCodeLine(8);
         repaint();
@@ -179,6 +193,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
             repaint();
             Thread.sleep(200); 
             rightArr[j] = arr[middle + 1 + j]; 
+            rightPos[j] = pos[middle + 1 + j];
         }
         int i = 0, j = 0;
         int k = left;
@@ -195,6 +210,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
                 repaint();
                 Thread.sleep(200); 
                 arr[k] = leftArr[i];
+                pos[k] = leftPos[i];
                 i++;
             }
             else {
@@ -203,6 +219,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
                 repaint();
                 Thread.sleep(200); 
                 arr[k] = rightArr[j];
+                pos[k] = rightPos[j];
                 j++;
             }
             k++;
@@ -216,6 +233,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
             repaint();
             Thread.sleep(200); 
             arr[k] = leftArr[i];
+            pos[k] = leftPos[i];
             i++;
             k++;
         }
@@ -228,28 +246,29 @@ class MergeSortingPanel extends JPanel implements Runnable {
             repaint();
             Thread.sleep(200); 
             arr[k] = rightArr[j];
+            pos[k] = rightPos[j];
             j++;
             k++;
         }
     }
-    private void mergesort(int arr[], int left, int right) throws InterruptedException {
+    private void mergesort(int arr[], int pos[],int left, int right) throws InterruptedException {
         if (left < right) {
             int middle = (left + right) / 2;
             highlightCodeLine(35);
             repaint();
             Thread.sleep(200); 
-            mergesort(arr, left, middle);
+            mergesort(arr,pos,left, middle);
             highlightCodeLine(36);
             repaint();
             Thread.sleep(200); 
-            mergesort(arr, middle + 1, right);
+            mergesort(arr,pos,middle + 1, right);
             highlightCodeLine(37);
             repaint();
             Thread.sleep(200); 
             highlightCodeLine(0);
             repaint();
             Thread.sleep(200); 
-            merge(arr, left, middle, right);
+            merge(arr, pos,left, middle, right);
         }
     }
     public void sort() {
@@ -258,7 +277,7 @@ class MergeSortingPanel extends JPanel implements Runnable {
             highlightCodeLine(32);
             repaint();
             Thread.sleep(200); 
-            mergesort(numbers,0,n-1);
+            mergesort(numbers,pos,0,n-1);
         	swapBar = -1;
             currentBar=-1;
             highlightCodeLine(-1);
