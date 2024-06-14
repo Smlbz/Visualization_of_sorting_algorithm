@@ -3,6 +3,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class BubbleSort {
@@ -68,6 +70,8 @@ class BubbleSortingPanel extends JPanel implements Runnable {
     private JTextPane codePane;
     private SimpleAttributeSet defaultAttr;
     private SimpleAttributeSet highlightAttr;
+    private int firstNum = -1;
+    private int secondNum = -1;
 
     public BubbleSortingPanel(ArrayList<Integer>number) {
     	if(number.size()==0) {
@@ -87,6 +91,15 @@ class BubbleSortingPanel extends JPanel implements Runnable {
     			pos[i] = i;
     		}
     	}
+        Map<Integer, Integer> elementToIndex = new HashMap<>();
+        for (int i = 0; i < numbers.length; i++) {
+            if (elementToIndex.containsKey(numbers[i])) {
+                // 找到重复值，返回第一对重复值的下标
+                firstNum = elementToIndex.get(numbers[i]);
+                secondNum = i;
+            }
+            elementToIndex.put(numbers[i], i);
+        }
         initStyles();
     }
 
@@ -126,10 +139,18 @@ class BubbleSortingPanel extends JPanel implements Runnable {
             int x = i * width;
             if (i == currentBar || i == swapBar) {
                 g.setColor(new Color(0xFFB6C1)); // 将正在比较或交换的条形图设置颜色
-            } else {
+            } 
+            else if(pos[i] == firstNum) {
+            	g.setColor(Color.RED);
+            }
+            else if(pos[i] == secondNum) {
+            	g.setColor(Color.BLUE);
+            }
+            else {
                 g.setColor(new Color(0xFF8C00)); // 其他条形图设置颜色
             }
             g.fillRect(x, getHeight() - height, width - 2, height); // 绘制条形图
+            g.setColor(Color.BLACK);
             Font font = new Font("Century Gothic", Font.PLAIN, 16);//设置字体大小
             g.setFont(font);
             g.drawString(Integer.toString(numbers[i]), x, getHeight() - height - 5); // 在每个条形图上方绘制数字

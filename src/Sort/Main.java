@@ -138,7 +138,7 @@ public class Main {
                 frame.getContentPane().revalidate();
                 frame.getContentPane().repaint();
                 new Main(frame);
-                BackButton.setVisible(false);
+                BackButton.setVisible(true);
         	}
         });
         
